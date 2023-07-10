@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="operation" type="java.lang.String" required="true" />
+        <cc:attribute name="product" type="edu.iit.sat.itmd4515.vblancoravena.domain.Product" required="true" />
+        <cc:attribute name="action" required="false" method-signature="java.lang.String action()"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <h:form>
+            <h3 class="text-center" rendered="#{not cc.attrs.operation.equalsIgnoreCase('created')}">Product ID: #{cc.attrs.product.id}</h3>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row">
+                <h:outputLabel for="productName" value="Product Name" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:inputText readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}" id="productName" p:placeholder="Write the product name..." value="#{cc.attrs.product.name}" styleClass="form-control"/>
+                    <h:messages for="productName"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row">
+                <h:outputLabel for="productPrice" value="Product Price" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:outputLabel styleClass="input-group">
+                        <span class="input-group-text">$</span>
+                        <h:inputText readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}" id="productPrice" converter="javax.faces.Double" p:placeholder="0.00" value="#{cc.attrs.product.price}" styleClass="form-control"/>
+                        <h:messages for="productPrice"/>
+                    </h:outputLabel>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row">
+                <h:outputLabel for="productMarketplace" value="Product Marketplace" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:inputText readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}" id="productMarketplace" p:placeholder="Write the product marketplace..." value="#{cc.attrs.product.marketplace}" styleClass="form-control"/>
+                    <h:messages for="productMarketplace"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row">
+                <h:outputLabel for="productDepartment" value="Product Department" styleClass="col-sm-2 col-form-label"/>  
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:selectOneMenu readonly="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}" disabled="#{cc.attrs.operation.equalsIgnoreCase('read') or cc.attrs.operation.equalsIgnoreCase('delete')}" id="productDepartment" value="#{cc.attrs.product.department}" styleClass="form-control">
+                        <f:selectItems value="#{sellerNewProductController.allDeparments}" 
+                                       var="productDepartment"
+                                       itemLabel="#{productDepartment.description}"
+                                       itemValue="#{productDepartment}"/>
+                    </h:selectOneMenu>   
+                    <h:messages for="productDepartment"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row" rendered="#{not cc.attrs.operation.equalsIgnoreCase('create')}" >
+                <h:outputLabel for="avgRate" value="Avg Rate" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:inputText readonly="true" id="avgRate" value="#{cc.attrs.product.salesRatesAvg}" converter="javax.faces.Double" styleClass="form-control"/>
+                    <h:messages for="avgRate"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row" rendered="#{not cc.attrs.operation.equalsIgnoreCase('create')}" >
+                <h:outputLabel for="sellersNum" value="# of Sellers" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:inputText readonly="true" id="sellersNum" value="#{cc.attrs.product.sellers.size()}" converter="javax.faces.Integer" styleClass="form-control"/>
+                    <h:messages for="sellersNum"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="mb-3 row" rendered="#{not cc.attrs.operation.equalsIgnoreCase('create')}" >
+                <h:outputLabel for="created" value="Created" styleClass="col-sm-2 col-form-label"/>
+                <h:panelGroup layout="block" styleClass="col-sm-10">
+                    <h:inputText readonly="true" id="created" value="#{cc.attrs.product.createdTimestamp}" styleClass="form-control">
+                        <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                    </h:inputText>
+                    <h:messages for="created"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+
+
+            <h:panelGroup layout="block" styleClass="text-center" rendered="#{cc.attrs.operation.equalsIgnoreCase('create')}" >
+                <h:commandButton value="Create Product" action="#{cc.attrs.action}" styleClass="btn btn-secondary" />
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="text-center" rendered="#{cc.attrs.operation.equalsIgnoreCase('update')}" >
+                <h:commandButton value="Update Product" action="#{cc.attrs.action}" styleClass="btn btn-secondary" />
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" styleClass="text-center" rendered="#{cc.attrs.operation.equalsIgnoreCase('delete')}" >
+                <h:commandButton value="Confirm Delete" action="#{cc.attrs.action}" styleClass="btn btn-secondary" />
+            </h:panelGroup>
+
+            <h:inputHidden value="#{cc.attrs.product.id}" />
+            <h:inputHidden value="#{cc.attrs.product.createdTimestamp}" >
+                <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+            </h:inputHidden>
+            <h:inputHidden value="#{cc.attrs.product.salesRatesAvg}" />
+
+        </h:form>
+
+    </cc:implementation>
+</html>

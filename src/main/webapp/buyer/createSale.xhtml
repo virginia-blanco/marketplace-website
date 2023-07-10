@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/templates/pageTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough" >
+
+    <ui:define name="headTitle">
+        Buy Page
+    </ui:define>
+
+    <ui:define name="title">
+
+        #{buyerWelcomeController.buyer.getFirstName()} #{buyerWelcomeController.buyer.getLastName()}, the products are:
+    </ui:define>
+
+
+
+    <ui:define name="content">
+
+        <h:dataTable class="table table-secondary table-striped table-hover text-center" value="#{productService.findAll()}" var="product">            
+
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product Price"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.price} $"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product Marketplace"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.marketplace}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product Deparment"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.department.description}"/>
+            </h:column>   
+            <h:column>
+                <f:facet name="header"><h:outputText value="Creation Date"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.createdTimestamp}">
+                    <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="# of Sellers"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.sellers.size()}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header"><h:outputText value="Rate"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.salesRatesAvg}"/>
+            </h:column>
+            <h:column>
+                <h:form>
+                    <h:panelGroup layout="block" styleClass="text-center">
+                        <h:commandButton  styleClass="btn btn-outline-secondary align-middle" action="#{buyerNewSaleController.saveSale(product)}" value="Buy"/>
+                    </h:panelGroup>
+                </h:form>
+            </h:column>
+
+        </h:dataTable>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/templates/pageTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:define name="headTitle">
+        Confirmation New Sale
+    </ui:define>
+
+    <ui:define name="title">
+        Product Confirmation Page
+    </ui:define>
+    <ui:define name="content">
+
+        <h3 class="text-center">You have made a sale: </h3>
+        <h:form>  
+            <h:panelGroup>
+                <table class="table table-secondary table-striped table-hover">
+
+                    <tr>
+                        <td><strong>Sale Id</strong></td>
+                        <td>#{buyerNewSaleController.sale.id}</td>
+                    </tr>
+                    <tr>
+                        <th>Product Id</th>
+                        <td>#{buyerNewSaleController.sale.product.id}</td>
+                    </tr>
+                    <tr>
+                        <th>Product Price</th>
+                        <td>#{buyerNewSaleController.sale.product.price}</td>
+                    </tr>
+                    <tr>
+                        <th>Product MP</th>
+                        <td>#{buyerNewSaleController.sale.product.marketplace}</td>
+                    </tr>
+                    <tr>
+                        <th>Product Depart</th>
+                        <td>#{buyerNewSaleController.sale.product.department.description}</td>
+                    </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td>
+                            <h:outputText value="#{buyerNewSaleController.sale.createdTimestamp}">
+                                <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                            </h:outputText>
+                        </td>
+                    </tr>
+                </table>
+            </h:panelGroup>
+
+
+            <h:panelGroup styleClass="text-center">
+                <hr class="my-4"/>
+
+                <h3 styleClass="text-center">Do you want to give a rate to this sale?</h3>
+                <h:panelGroup styleClass="row text-center justify-content-center" style="align-items: center; padding-top: 5px;">
+                    <h:panelGroup styleClass="form-floating" id="floatingSelect" style="justify-content:center; width: 100px;" >
+                        <h:selectOneMenu styleClass="form-select mx-auto" value = "#{buyerNewSaleController.sale.rate}" style="align-items: center; width: 75px; background-color:#d7d8da;">
+                            <f:selectItem itemValue = "1" itemLabel = "1" /> 
+                            <f:selectItem itemValue = "2" itemLabel = "2" /> 
+                            <f:selectItem itemValue = "3" itemLabel = "3" /> 
+                            <f:selectItem itemValue = "4" itemLabel = "4" /> 
+                            <f:selectItem itemValue = "5" itemLabel = "5" /> 
+                        </h:selectOneMenu>
+                        <h:outputLabel for="floatingSelect">Rate:</h:outputLabel>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="col-sm-10" style="width: 175px; background-color:#e2e3e5; height: 0px;" >
+                    <h:inputText id="saleId" value="#{buyerNewSaleController.sale.id}" styleClass="form-control invisible"/>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="btn-toolbar text-center justify-content-center" style="align-items: center; padding-top: 10px;">
+                    <h:panelGroup styleClass="btn-group me-2 text-center" >
+                        <h:commandButton styleClass=" w-20 btn btn-outline-secondary text-center" action="/buyer/welcome.xhtml" value="Skip" />
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="btn-group me-2 text-center">
+
+                        <h:commandButton styleClass=" w-20 btn btn-secondary text-center" action="#{buyerNewSaleController.giveSaleRate(buyerNewSaleController.sale.product.id)}" value="Rate" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

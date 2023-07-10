@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./WEB-INF/templates/pageTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:define name="headTitle">Welcome Page</ui:define>
+
+    <ui:define name="title">
+        Marketplace Welcome Web Page
+    </ui:define>
+
+    <ui:define name="content" class="text-center">
+
+        <h:panelGroup rendered="#{loginController.seller}">
+
+            <h2 class="text-center">Hello, #{sellerWelcomeController.seller.getFirstName()} #{sellerWelcomeController.seller.getLastName()}</h2>
+            <h4  class="text-center" style="padding-bottom: 20px;">Your personal data are: </h4>
+
+            <table class="table table-secondary table-striped table-hover justify-content-center" style="align-items: center; margin: 0 auto;">
+                <tr>
+                    <td class="align-middle" ><strong>Id</strong></td>
+                    <td class="align-middle" >#{sellerWelcomeController.seller.getId()}</td>
+                </tr>
+
+                <tr>
+                    <th class="align-middle" >First Name</th>
+                    <td class="align-middle" >#{sellerWelcomeController.seller.getFirstName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Last Name</th>
+                    <td class="align-middle">#{sellerWelcomeController.seller.getLastName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Birthday</th>
+                    <td class="align-middle">
+                        <h:outputText value="#{sellerWelcomeController.seller.getBirthday()}">
+                            <f:convertDateTime type="localDate" dateStyle="Long" pattern="dd MMM yyyy"/>
+                        </h:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Email</th>
+                    <td class="align-middle">#{sellerWelcomeController.seller.getEmail()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Address</th>
+                    <td class="align-middle">#{sellerWelcomeController.seller.getAddress()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Username</th>
+                    <td class="align-middle">#{sellerWelcomeController.seller.getUser().getUserName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Password</th>
+                    <td class="align-middle">******</td>
+                </tr>
+            </table>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{loginController.buyer and !(loginController.seller)}">
+
+            <h2 class="text-center">Hello, #{buyerWelcomeController.buyer.getFirstName()} #{buyerWelcomeController.buyer.getLastName()}</h2>
+            <h4  class="text-center" style="padding-bottom: 20px;">Your personal data are: </h4>
+
+            <table class="table table-secondary table-striped table-hover justify-content-center" style="align-items: center; margin: 0 auto;">
+                <tr>
+                    <td class="align-middle" ><strong>Id</strong></td>
+                    <td class="align-middle" >#{buyerWelcomeController.buyer.getId()}</td>
+                </tr>
+
+                <tr>
+                    <th class="align-middle" >First Name</th>
+                    <td class="align-middle" >#{buyerWelcomeController.buyer.getFirstName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Last Name</th>
+                    <td class="align-middle">#{buyerWelcomeController.buyer.getLastName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Birthday</th>
+                    <td class="align-middle">
+                        <h:outputText value="#{buyerWelcomeController.buyer.getBirthday()}">
+                            <f:convertDateTime type="localDate" dateStyle="Long" pattern="dd MMM yyyy"/>
+                        </h:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Email</th>
+                    <td class="align-middle">#{buyerWelcomeController.buyer.getEmail()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Address</th>
+                    <td class="align-middle">#{buyerWelcomeController.buyer.getAddress()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Username</th>
+                    <td class="align-middle">#{buyerWelcomeController.buyer.getUser().getUserName()}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Password</th>
+                    <td class="align-middle">******</td>
+                </tr>
+            </table>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{loginController.admin and !(loginController.seller) and !(loginController.buyer)}">
+
+            <h2 class="text-center">Hello, #{loginController.user.getUserName()}</h2>
+            <h4  class="text-center" style="padding-bottom: 20px;">Your personal data are: </h4>
+
+            <table class="table table-secondary table-striped table-hover justify-content-center" style="align-items: center; margin: 0 auto;">
+                <tr>
+                    <td class="align-middle" ><strong>Username</strong></td>
+                    <td class="align-middle" >#{loginController.authenticatedUser}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Password</th>
+                    <td class="align-middle">******</td>
+                </tr>
+            </table>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

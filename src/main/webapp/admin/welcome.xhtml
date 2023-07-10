@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/templates/pageTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="headTitle">Admin Page</ui:define>
+
+    <ui:define name="title">
+        Welcome, 
+        <c:choose>
+            <c:when test="#{loginController.admin}">
+                #{loginController.authenticatedUser}
+            </c:when>
+            <c:when test="#{loginController.seller}">
+                #{sellerWelcomeController.seller.getFirstName()} #{sellerWelcomeController.seller.getLastName()}
+            </c:when>
+            <c:when test="#{loginController.buyer}">
+                #{buyerWelcomeController.buyer.getFirstName()} #{buyerWelcomeController.buyer.getLastName()}
+            </c:when>
+        </c:choose>
+    </ui:define>
+
+    <ui:define name="content">
+        <!-- value: collection we are displaying; var: var to represent each row -->
+        <!-- we have to name the service to reference it  -->
+        <h3 class="text-center">Products: </h3>
+        <h:dataTable class="table table-secondary table-striped table-hover text-center" value="#{productService.findAll()}" var="product">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Price"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.price} $"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Marketplace"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.marketplace}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Deparment"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.department.description}"/>
+            </h:column> 
+            <h:column>
+                <f:facet name="header"><h:outputText value="Avg Rate"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.salesRatesAvg}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Created"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.createdTimestamp}">
+                    <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="# of Sellers"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{product.sellers.size()}"/>
+            </h:column>
+        </h:dataTable>
+        
+        <h3 class="text-center" style="padding-top: 10px;">Sales: </h3>
+        <h:dataTable class="table table-secondary table-striped table-hover text-center" value="#{saleService.findAll()}" var="sale">
+            <h:column>
+                <f:facet name="header"><h:outputText value="Sale ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Product ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.product.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Buyer ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.buyer.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Sale ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Created"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.createdTimestamp}">
+                    <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Sale Rate"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{sale.rate}"/>
+            </h:column>
+        </h:dataTable>
+        
+        <h3 class="text-center" style="padding-top: 10px;">Sellers: </h3>
+        <h:dataTable class="table table-secondary table-striped table-hover text-center" value="#{sellerService.findAll()}" var="seller">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="First Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.firstName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Last Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.lastName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Birthday"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.birthday}">
+                    <f:convertDateTime type="localDate" dateStyle="long" pattern="dd MMM yyyy"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Address"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.address}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Username"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.user.userName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Password"/></f:facet>
+                <h:outputText styleClass="align-middle" value="******"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Created"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{seller.createdTimestamp}">
+                    <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                </h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        
+        <h3 class="text-center" style="padding-top: 10px;">Buyers: </h3>
+        <h:dataTable class="table table-secondary table-striped table-hover text-center" value="#{buyerService.findAll()}" var="buyer">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="First Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.firstName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Last Name"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.lastName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Birthday"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.birthday}">
+                    <f:convertDateTime type="localDate" dateStyle="long" pattern="dd MMM yyyy"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Address"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.address}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Username"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.user.userName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Password"/></f:facet>
+                <h:outputText styleClass="align-middle" value="******"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Created"/></f:facet>
+                <h:outputText styleClass="align-middle" value="#{buyer.createdTimestamp}">
+                    <f:convertDateTime type="localDateTime" dateStyle="long" pattern="dd MMM yyyy, HH:mm"/>
+                </h:outputText>
+            </h:column>
+        </h:dataTable>
+    </ui:define>
+
+
+</ui:composition>
